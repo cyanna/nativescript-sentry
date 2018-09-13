@@ -25,6 +25,14 @@ export class Common extends Observable {
         return pairs.join('&');
     }
 
+    private static getAppVersionName() {
+      try {
+         appversion.getVersionNameSync();
+      } catch (ex) {
+        return 'Not Found';
+      }
+    }
+
     protected static _init(dsn: string, config?: any) {
         // native use private and plublic dsn while the raven js olnly uses public
         let aux = dsn.split('//');
@@ -82,7 +90,7 @@ export class Common extends Observable {
 
                 return data;
             })
-            .setRelease(appversion.getVersionNameSync())
+            .setRelease(this.getAppVersionName())
             .install();
     }
     protected static _setUser(user: SentryUser) {
